@@ -61,7 +61,7 @@ hoteles(12,'Patzul','Km 90',2,250,400,100,17).
 hoteles(13,'Libfresh','Km 100',2,250,400,50,7).
 hoteles(14,'Kenel','Km 180',3,250,400,70,8).
 hoteles(15,'Manoi','Km 40',1,250,400,40,10).
-hoteles(16,'Palmeras','Km 7',2,250,400,30,15).
+hoteles(16,'Palmeras','Km 7',2,250,400,30,1).
 hoteles(17,'Ovni','Km 8',4,250,400,70,19).
 hoteles(18,'Ovni 2','Km 270',5,250,400,95,21).
 hoteles(19,'Runners','Km 187',3,200,350,35,22).
@@ -425,8 +425,40 @@ trabajadores(300,'Lorein','Oficinista',31).
 trabajadores(301,'yulisa','Encargado',31).
 % end: Tablas para consultas
 
-% start: reglas de hoteles sistema experto
-% end: reglas de hoteles sistema experto
+% start: reglas de hoteles
+% (nombre_hotel, estrellas, simple, doble, comida, departamento, lenguaje, clima, distancia)
+hotel_reglas('Camino Real',4,100,200,50,'peten','espaniol','tropical',0).
+hotel_reglas('Holiday Inn',4,200,350,75,'izabal','espaniol','calor',0).
+hotel_reglas('Hu-nal ye',1,50,100,60,'izabal','espaniol', 'calor',260).
+hotel_reglas('Onetwo',3,200,350,80,'quiche', 'katchikel', 'frio',288).
+hotel_reglas('Paradise',2,150,250,80,'alta verapaz','espaniol','frio',40).
+hotel_reglas('Tikal',1,200,350,100,'jutiapa','katchikel','calor',350).
+hotel_reglas('Atanacio',5,350,700,100,'suchitepequez','espaniol','templado',102).
+hotel_reglas('Pana Inn',4,250,500,50,'chimaltenango','katchikel','calor',80).
+hotel_reglas('Tzul',3,150,400,50,'solola','ketchi','frio',156).
+hotel_reglas('Ktuz',3,300,600,50,'el progreso','katchikel','calor',150).
+hotel_reglas('Patulul',3,300,500,150,'san marcos','ingles','calor',67).
+hotel_reglas('Patzul',2,250,400,100,'quetzaltenango','ingles','frio',90).
+hotel_reglas('Libfresh',2,250,400,50,'san marcos','ingles','calor',100).
+hotel_reglas('Kenel',3,250,400,70,'jutiapa','katchikel','calor',180).
+hotel_reglas('Manoi',1,250,400,40,'santa rosa','ingles','calor',40).
+hotel_reglas('Palmeras',2,250,400,30,'peten','espaniol','tropical',7).
+hotel_reglas('Ovni',4,250,400,70,'retalhuleu','ingles','calor',8).
+hotel_reglas('Ovni 2',5,250,400,95,'totonicapan','ingles','templado',270).
+hotel_reglas('Runners',3,200,350,35,'sacatepequez','espaniol','templado',187).
+hotel_reglas('Tutuc',4,150,280,25,'guatemala','ingles','templado',365).
+hotel_reglas('Las Palmas',3,450,700,150,'zacapa','ingles','templado',650).
+hotel_reglas('Kinal',4,500,800,200,'santa rosa','ingles','rosa',354).
+hotel_reglas('Prank',5,400,700,150,'chiquimula','katchikel','calor',269).
+hotel_reglas('Donia Rosa',4,250,500,100,'zacapa','ingles','calor',34).
+hotel_reglas('Los Pulpos',3,500,700,100,'escuintla','espaniol','calor',70).
+hotel_reglas('Las Canarias',2,450,600,200,'santa rosa','ingles','calor',65).
+hotel_reglas('Hawaii',1,400,700,150,'suchitepequez','espaniol','templado',123).
+hotel_reglas('Yocute',4,350,500,100,'baja verapaz','ingles','templado',500).
+hotel_reglas('Renuevate',3,280,600,65,'solola','ketchi','frio',90).
+hotel_reglas('Las Islas',2,340,600,80,'guatemala','ingles','templado',241).
+hotel_reglas('Usac',3,100,50,7,'quiche','katchikel','frio',0).
+% end: reglas de hoteles
 
 % inicio del menú
 inicio:-nl,
@@ -450,11 +482,53 @@ analisis_opcion(X_OPCION):-(
   error).
 % fin del menú
 
+% start: preguntas
+departamento_deseado(DEPARTAMENTO):-
+  write('¿Deseas un departamento?: '),
+  read(DEPARTAMENTO).
+
+lenguaje_deseado(LENGUAJE):-
+  write('¿Tienes algún lenguaje que deseas en el lugar a visitar?'),
+  read(LENGUAJE).
+
+dias_viaje(DIAS):-
+  write('¿Cuántos días planeas viajar?: '),
+  read(DIAS).
+
+clima_deseado(CLIMA):-
+  write('¿Deseas algún clima en específico?: '),
+  read(CLIMA).
+
+distancia_maxima(DISTANCIA):-
+  write('¿Distancia máxima que deseas viajar?: '),
+  read(DISTANCIA).
+
+estrellas_deseadas(ESTRELLAS):-
+  write('¿Nivel de estrellas del hotel deseado?: '),
+  read(ESTRELLAS).
+
+presupuesto(PRESUPUESTO_DISPONIBLE):-
+  write('Dime de cuanto es tu presupuesto aproximado: '),
+  read(PRESUPUESTO_DISPONIBLE).
+
+viajaras_carro(AUTO):-
+  write('¿Viajarás en vehículo?: (si/no): '),
+  read(AUTO).
+
+tipo_habitacion(TIPO_HABITACION):-
+  write('¿Qué tipo de habitación necesitas? (simple/doble): '),
+  read(TIPO_HABITACION).
+
+deseas_comida(ADD_COMIDA):-
+  write('¿Quieres agregar comida por parte del hotel? (si/no): '),
+  read(ADD_COMIDA).
+% end: preguntas
+
 % inicio de la decisión
 decidir_hotel:-nl,
   write('Sistema experto para sugerir hotel:'), nl,
-  write('¿Tienes presupuesto establecido para este viaje? (S/N): '),
-  read(TIENEPRESUPUESTO),nl,
+  write('¿Tienes presupuesto establecido para este viaje? (si/no): '),
+  read(TIENEPRESUPUESTO),
   analisis_opcion_primer_camino(TIENEPRESUPUESTO).
 
 analisis_opcion_primer_camino(X_OPCION_PRESUPUESTO):-
@@ -463,23 +537,126 @@ analisis_opcion_primer_camino(X_OPCION_PRESUPUESTO):-
   segundo_camino.
 
 segundo_camino:-
-  write('¿Quieres buscar hotel por su nivel de estrellas?'),
-  read(PORNIVELESTRELLAS),nl,
-  analisis_opcion_segundo_camino(PORNIVELESTRELLAS),nl.
+  write('¿Quieres buscar hotel por su nivel de estrellas? (si/no): '),
+  read(PORNIVELESTRELLAS),
+  analisis_opcion_segundo_camino(PORNIVELESTRELLAS).
 
 analisis_opcion_segundo_camino(X_OPCION_NIVEL_ESTRELLAS):-
   X_OPCION_NIVEL_ESTRELLAS='si'->camino_estrellas;
   X_OPCION_NIVEL_ESTRELLAS='s'->camino_estrellas;
+  tercer_camino.
+
+tercer_camino:-
+  write('¿Tienes un lugar que deseas visitar? (si/no): '),
+  read(PORDISTANCIA),
+  analisis_opcion_tecer_camino(PORDISTANCIA).
+
+analisis_opcion_tecer_camino(X_OPCION_DISTANCIA):-
+  X_OPCION_DISTANCIA='si'->camino_distancia;
+  X_OPCION_DISTANCIA='s'->camino_distancia;
   camino_clima.
 
-camino_presupuesto:-nl,
-nl.
+% (nombre_hotel, estrellas, simple, doble, comida, departamento, lenguaje, clima, distancia)
+camino_presupuesto:-
+  presupuesto(PRESUPUESTO_DISPONIBLE),
+  viajaras_carro(AUTO),
+  deseas_comida(ADD_COMIDA),
+  tipo_habitacion(TIPO_HABITACION),
+  dias_viaje(DIAS),
+  estrellas_deseadas(ESTRELLAS),
+  hotel_reglas(VALOR,ESTRELLAS,SIMPLE,DOBLE,PRECIO_COMIDA,_,_,_,DISTANCIA_HOTEL),
+  (AUTO == 'no' -> GASTO_AUTO is 0 ; AUTO == 'si' -> GASTO_AUTO is 2.5*2*DISTANCIA_HOTEL),
+  (TIPO_HABITACION == 'simple' -> GASTO_HABITACION is SIMPLE*DIAS ; TIPO_HABITACION == 'doble' -> GASTO_HABITACION is DOBLE*DIAS),
+  (ADD_COMIDA == 'no' -> GASTO_COMIDA is 0 ; ADD_COMIDA == 'si' -> GASTO_COMIDA is PRECIO_COMIDA*DIAS),
+  (PRESUPUESTO_FINAL is GASTO_AUTO + GASTO_HABITACION + GASTO_COMIDA),
+  PRESUPUESTO_FINAL < PRESUPUESTO_DISPONIBLE,
+  write('-------------------------------------------------------------------------------------------------------------'),nl,
+  write('El hotel que te recomiendo es: '), write(VALOR), write(' con valoración de: '),write(ESTRELLAS),write(' estrellas, con una estadía de: '), write(DIAS), write(' días.'), nl,
+  write('Gastando un total aproximado de: '),write(PRESUPUESTO_FINAL),nl,
+  write('Gastos en habitación: '),write(GASTO_HABITACION),nl,
+  write('Gastos en comida: '),write(GASTO_COMIDA),nl,
+  write('Gastos en transporte: '),write(GASTO_AUTO),nl,
+  write('Presupuesto disponible: '),write(PRESUPUESTO_DISPONIBLE),nl,
+  write('-------------------------------------------------------------------------------------------------------------'),nl,
+  fail.
+camino_presupuesto:-
+  write('El hotel ideal no fue encontrado, perdón.').
 
-camino_clima:-nl,
-nl.
+% (nombre_hotel, estrellas, simple, doble, comida, departamento, lenguaje, clima, distancia)
+camino_clima:-
+  clima_deseado(CLIMA),
+  dias_viaje(DIAS),
+  distancia_maxima(DISTANCIA),
+  deseas_comida(ADD_COMIDA),
+  viajaras_carro(AUTO),
+  tipo_habitacion(TIPO_HABITACION),
+  hotel_reglas(VALOR,ESTRELLAS,SIMPLE,DOBLE,PRECIO_COMIDA,_,_,CLIMA_HOTEL,DISTANCIA_HOTEL),
+  (AUTO == 'no' -> GASTO_AUTO is 0 ; AUTO == 'si' -> GASTO_AUTO is 2.5*2*DISTANCIA_HOTEL),
+  (TIPO_HABITACION == 'simple' -> GASTO_HABITACION is SIMPLE*DIAS ; TIPO_HABITACION == 'doble' -> GASTO_HABITACION is DOBLE*DIAS),
+  (ADD_COMIDA == 'no' -> GASTO_COMIDA is 0 ; ADD_COMIDA == 'si' -> GASTO_COMIDA is PRECIO_COMIDA*DIAS),
+  (PRESUPUESTO_FINAL is GASTO_AUTO + GASTO_HABITACION + GASTO_COMIDA),
+  DISTANCIA_HOTEL < DISTANCIA,
+  CLIMA_HOTEL = CLIMA,
+  write('-------------------------------------------------------------------------------------------------------------'),nl,
+  write('El hotel que te recomiendo es: '), write(VALOR), write(' con valoración de: '),write(ESTRELLAS),write(' estrellas, con una estadía de: '), write(DIAS), write(' días.'), nl,
+  write('Gastando un total aproximado de: '),write(PRESUPUESTO_FINAL),nl,
+  write('Gastos en habitación: '),write(GASTO_HABITACION),nl,
+  write('Gastos en comida: '),write(GASTO_COMIDA),nl,
+  write('Gastos en transporte: '),write(GASTO_AUTO),nl,
+  write('-------------------------------------------------------------------------------------------------------------'),nl,
+  fail.
+camino_clima:-
+  write('El hotel ideal no fue encontrado, perdón.').
 
-camino_estrellas:-nl,
-  nl.
+% (nombre_hotel, estrellas, simple, doble, comida, departamento, lenguaje, clima, distancia)
+camino_estrellas:-
+  estrellas_deseadas(ESTRELLAS),
+  deseas_comida(ADD_COMIDA),
+  dias_viaje(DIAS),
+  viajaras_carro(AUTO),
+  tipo_habitacion(TIPO_HABITACION),
+  lenguaje_deseado(LENGUAJE),
+  hotel_reglas(VALOR,ESTRELLAS,SIMPLE,DOBLE,PRECIO_COMIDA,_,LENGUAJE,_,DISTANCIA_HOTEL),
+  (AUTO == 'no' -> GASTO_AUTO is 0 ; AUTO == 'si' -> GASTO_AUTO is 2.5*2*DISTANCIA_HOTEL),
+  (TIPO_HABITACION == 'simple' -> GASTO_HABITACION is SIMPLE*DIAS ; TIPO_HABITACION == 'doble' -> GASTO_HABITACION is DOBLE*DIAS),
+  (ADD_COMIDA == 'no' -> GASTO_COMIDA is 0 ; ADD_COMIDA == 'si' -> GASTO_COMIDA is PRECIO_COMIDA*DIAS),
+  (PRESUPUESTO_FINAL is GASTO_AUTO + GASTO_HABITACION + GASTO_COMIDA),
+  write('-------------------------------------------------------------------------------------------------------------'),nl,
+  write('El hotel que te recomiendo es: '), write(VALOR), write(' con valoración de: '),write(ESTRELLAS),write(' estrellas, con una estadía de: '), write(DIAS), write(' días.'), nl,
+  write('Gastando un total aproximado de: '),write(PRESUPUESTO_FINAL),nl,
+  write('Gastos en habitación: '),write(GASTO_HABITACION),nl,
+  write('Gastos en comida: '),write(GASTO_COMIDA),nl,
+  write('Gastos en transporte: '),write(GASTO_AUTO),nl,
+  write('-------------------------------------------------------------------------------------------------------------'),nl,
+  fail.
+camino_estrellas:-
+  write('El hotel ideal no fue encontrado, perdón.').
+
+% (nombre_hotel, estrellas, simple, doble, comida, departamento, lenguaje, clima, distancia)
+camino_distancia:-
+  distancia_maxima(DISTANCIA),
+  departamento_deseado(DEPARTAMENTO),
+  deseas_comida(ADD_COMIDA),
+  dias_viaje(DIAS),
+  viajaras_carro(AUTO),
+  tipo_habitacion(TIPO_HABITACION),
+  hotel_reglas(VALOR,ESTRELLAS,SIMPLE,DOBLE,PRECIO_COMIDA,DEPARTAMENTO,_,_,DISTANCIA_HOTEL),
+  (AUTO == 'no' -> GASTO_AUTO is 0 ; AUTO == 'si' -> GASTO_AUTO is 2.5*2*DISTANCIA_HOTEL),
+  (TIPO_HABITACION == 'simple' -> GASTO_HABITACION is SIMPLE*DIAS ; TIPO_HABITACION == 'doble' -> GASTO_HABITACION is DOBLE*DIAS),
+  (ADD_COMIDA == 'no' -> GASTO_COMIDA is 0 ; ADD_COMIDA == 'si' -> GASTO_COMIDA is PRECIO_COMIDA*DIAS),
+  (PRESUPUESTO_FINAL is GASTO_AUTO + GASTO_HABITACION + GASTO_COMIDA),
+  DISTANCIA_HOTEL < DISTANCIA,
+  write('-------------------------------------------------------------------------------------------------------------'),nl,
+  write('El hotel que te recomiendo es: '), write(VALOR), write(' con valoración de: '),write(ESTRELLAS),write(' estrellas, con una estadía de: '), write(DIAS), write(' días.'), nl,
+  write('Gastando un total aproximado de: '),write(PRESUPUESTO_FINAL),nl,
+  write('Gastos en habitación: '),write(GASTO_HABITACION),nl,
+  write('Gastos en comida: '),write(GASTO_COMIDA),nl,
+  write('Gastos en transporte: '),write(GASTO_AUTO),nl,
+  write('-------------------------------------------------------------------------------------------------------------'),nl,
+  fail.
+camino_distancia:-
+  write('El hotel ideal no fue encontrado, perdón.').
+
 % fin de la decisión
 
 % inicio de los reportes
